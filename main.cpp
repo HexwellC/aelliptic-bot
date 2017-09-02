@@ -17,6 +17,12 @@
 #include <tgbot/tgbot.h>
 #include "logging.hpp"
 #include "watchdog.hpp"
+#include "bot.hpp"
+
+namespace aelliptic {
+/// Exposed Telegram Bot instance
+
+}
 
 using namespace aelliptic;
 
@@ -29,5 +35,9 @@ int main(int argc, char** argv) {
     // WatchDog is also a RAII wrapper for everything that needs to be closed
     // on application exit.
     WatchDog _watcher("bot.log");
+    log::info("Initializing bot and registering commands");
+    //TgBot::Bot _bot(argv[1]);
+    bot = Bot(argv[1]);
+    
     return 0;
 }
