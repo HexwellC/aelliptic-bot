@@ -18,6 +18,7 @@
 #include "logging.hpp"
 #include "watchdog.hpp"
 #include "bot.hpp"
+#include "commands.hpp"
 
 using namespace aelliptic;
 
@@ -27,11 +28,27 @@ int main(int argc, char** argv) {
             "you are welcome to redistribute it\nunder certain conditions;"
               << std::endl;
     std::cout << "See LICENSE file for more details." << std::endl;
+    if (argc < 2) {
+        std::cerr << "No token supplied!" << std::endl;
+        return 1;
+    }
     // WatchDog is also a RAII wrapper for everything that needs to be closed
     // on application exit.
     WatchDog _watcher("bot.log");
     log::info("Initializing bot and registering commands");
     bot = _Bot(argv[1]);
-
+    
+    try {
+        std::string str = "Bot username: " + bot->getApi().getMe()->username;
+        log::info(str.c_str());
+        TgBot::TgLongPoll longPoll(bot->);
+        while (true) {
+            log::trace("Long poll started");
+            longPoll.start();
+        }
+    } catch (TgBot::TgException& e) {
+        log::error("Exception occurred in bot poll loop!");
+        log::error(e.what());
+    }
     return 0;
 }
