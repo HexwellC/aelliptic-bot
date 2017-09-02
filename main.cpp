@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
     WatchDog _watcher("bot.log");
     log::info("Initializing bot and registering commands");
     bot = _Bot(argv[1]);
-    
+    commands::_registerCommands();
     try {
         std::string str = "Bot username: " + bot->getApi().getMe()->username;
         log::info(str.c_str());

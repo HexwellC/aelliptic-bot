@@ -12,7 +12,7 @@ option(NO_TRACE_LOG "No trace logging" OFF)
 if (NO_TRACE_LOG)
     add_definitions(-DAE_NO_TRACE_LOG)
 endif()
-set(SOURCE_FILES logging.hpp main.cpp logging.cpp watchdog.hpp watchdog.cpp bot.hpp bot.cpp)
+set(SOURCE_FILES logging.hpp main.cpp logging.cpp watchdog.hpp watchdog.cpp bot.hpp bot.cpp commands/start.hpp commands/command_base.hpp commands/start.cpp commands.hpp)
 add_executable(aelliptic_bot ${SOURCE_FILES})
 target_link_libraries(aelliptic_bot ${CMAKE_THREAD_LIBS_INIT}
         ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} TgBot)
