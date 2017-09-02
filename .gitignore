@@ -30,3 +30,22 @@
 *.exe
 *.out
 *.app
+
+# User stuff
+## IntelliJ IDEA files
+.idea/
+## CMake and Make things
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+CTestTestfile.cmake
+cmake_install.cmake
+install_manifest.txt
+## Used by Vim
+compile_commands.json
+## Built stuff
+/*build*
+## Something else
+/doc/
