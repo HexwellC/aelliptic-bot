@@ -19,15 +19,15 @@
 #include <tgbot/Bot.h>
 
 namespace aelliptic {
-    class Bot {
+    class _Bot {
     public:
-        Bot() = default;
-        Bot(char* token);
-        ~Bot();
+        _Bot() = default;
+        _Bot(char* token);
+        ~_Bot();
         TgBot::Bot *operator->();
     private:
         TgBot::Bot _bot;
     };
-    extern Bot bot;
+    extern _Bot bot;
 }
 #endif //AELLIPTIC_BOT_BOT_HPP
