@@ -58,11 +58,6 @@ namespace aelliptic {
 
         inline void warn(const std::string& msg) { log("WARN", msg); }
 
-        inline void error(const std::exception& e) { log("ERROR", e.what()); }
-
-        inline void error(const std::exception& e, const std::string& msg) {
-            log("ERROR", msg);
-            log("ERROR", e.what());
-        }
+        inline void error(const std::string& ex) { log("ERROR", ex); }
     }
 };
