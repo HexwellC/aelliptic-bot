@@ -1,14 +1,15 @@
 cmake_minimum_required(VERSION 2.8)
 project(aelliptic_bot)
-
 set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall")
 set(Boost_USE_MULTITHREADED ON)
-
 find_package(Threads REQUIRED)
 find_package(Boost COMPONENTS system REQUIRED)
 include_directories(tgbot-cpp/include)
-
-set(SOURCE_FILES main.cpp)
+option(NO_TRACE_LOG "No trace logging" OFF)
+if (NO_TRACE_LOG)
+    add_definitions(-DAE_NO_TRACE_LOG)
+endif()
+set(SOURCE_FILES logging.hpp main.cpp logging.cpp)
 add_executable(aelliptic_bot ${SOURCE_FILES})
 target_link_libraries(aelliptic_bot ${Boost_LIBRARIES} TgBot)
