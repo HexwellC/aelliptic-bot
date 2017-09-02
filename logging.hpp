@@ -70,7 +70,7 @@ namespace aelliptic {
         */
         void trace(const char* msg);
 #else
-        inline void trace(const std::string& msg) { }
+        inline void trace(const char* msg) { }
 #endif
     }
 }

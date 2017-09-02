@@ -16,12 +16,18 @@
 #include "bot.hpp"
 
 namespace aelliptic {
-    _Bot::_Bot(char* token) : _bot(token) { }
+    _Bot::_Bot() { };
 
-    _Bot::~_Bot() { delete _bot; }
+    _Bot::_Bot(const char* token) {
+        _bot = new TgBot::Bot(token);
+    }
+
+    _Bot::~_Bot() {
+        delete _bot;
+    }
 
     TgBot::Bot* _Bot::operator->() {
-        return &_bot;
+        return _bot;
     }
 
     _Bot bot;

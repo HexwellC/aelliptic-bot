@@ -63,7 +63,7 @@ namespace aelliptic {
         }
 
 #ifndef AE_NO_TRACE_LOG
-        inline void trace(const char* msg) {
+        void trace(const char* msg) {
             getTime();
             std::cout << std::put_time(&tm, TIME_PATTERN)
                       << " [TRACE]: " << msg << std::endl;

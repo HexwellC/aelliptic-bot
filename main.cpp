@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
     try {
         std::string str = "Bot username: " + bot->getApi().getMe()->username;
         log::info(str.c_str());
-        TgBot::TgLongPoll longPoll(bot->);
+        TgBot::TgLongPoll longPoll(*bot._bot);
         while (true) {
             log::trace("Long poll started");
             longPoll.start();

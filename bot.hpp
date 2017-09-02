@@ -21,12 +21,11 @@
 namespace aelliptic {
     class _Bot {
     public:
-        _Bot() = default;
-        _Bot(char* token);
+        _Bot();
+        _Bot(const char* token);
         ~_Bot();
         TgBot::Bot *operator->();
-    private:
-        TgBot::Bot _bot;
+        TgBot::Bot* _bot = nullptr;
     };
     extern _Bot bot;
 }
