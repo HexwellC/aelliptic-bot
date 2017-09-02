@@ -24,39 +24,11 @@
 
 namespace aelliptic {
     namespace log {
-        /// This sets to true if an error in logging system occurs
-        bool failbit = false;
         /// Used in WatchDog, do not use in other places
-        void init();
+        void init(const char* filename);
+
         /// Used in WatchDog, do not use in other places
         void close();
-        /// Trace logger
-        /**
-         * Tracing level is logged only to console. It can be disabled by
-         * defining AE_NO_TRACE_LOG
-         * @param msg Message to log
-         */
-        inline void trace(const std::string& msg);
-        /// Informative logger
-        /**
-         * Simply logs a message with INFO flag.
-         * @param msg Message to log
-         */
-        inline void info(const std::string& msg);
-        /// Warning logger
-        /**
-         * Logs a warning. Almost no difference with info level, except flag.
-         * @param msg Message to log
-         */
-        inline void warn(const std::string& msg);
-        /// Error logger
-        /**
-         * Logs exception message.
-         * Note: in most cases, you probably want a warn logging level.
-         * Seriously.
-         * @param ex Error to log
-         */
-        inline void error(const std::string& ex);
 
         /// General logger
         /**
@@ -64,7 +36,42 @@ namespace aelliptic {
          * @param level Logging level string, often called "flag"
          * @param msg Message to log
          */
-        void log(const std::string& level, const std::string& msg);
+        void log(const char* level, const char* msg);
+
+        /// Informative logger
+        /**
+         * Simply logs a message with INFO flag.
+         * @param msg Message to log
+         */
+        inline void info(const char* msg) { log("INFO", msg); }
+
+        /// Warning logger
+        /**
+         * Logs a warning. Almost no difference with info level, except flag.
+         * @param msg Message to log
+         */
+        inline void warn(const char* msg) { log("WARN", msg); }
+
+        /// Error logger
+        /**
+         * Logs exception message.
+         * Note: in most cases, you probably want a warn logging level.
+         * Seriously.
+         * @param ex Error to log
+         */
+        inline void error(const char* ex) { log("ERROR", ex); }
+
+#ifndef AE_NO_TRACE_LOG
+        /// Trace logger
+        /**
+        * Tracing level is logged only to console. It can be disabled by
+        * defining AE_NO_TRACE_LOG
+        * @param msg Message to log
+        */
+        void trace(const char* msg);
+#else
+        inline void trace(const std::string& msg) { }
+#endif
     }
 }
 #endif //AELLIPTIC_BOT_OS_H

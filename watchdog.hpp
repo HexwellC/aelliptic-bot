@@ -27,7 +27,7 @@ namespace aelliptic {
      */
     class WatchDog {
     public:
-        WatchDog();
+        explicit WatchDog(const char* logfile);
 
         ~WatchDog();
     };

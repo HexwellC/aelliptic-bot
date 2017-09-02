@@ -17,8 +17,8 @@
 #include "logging.hpp"
 
 namespace aelliptic {
-    WatchDog::WatchDog() {
-        log::init();
+    WatchDog::WatchDog(const char* logfile) {
+        log::init(logfile);
     }
 
     WatchDog::~WatchDog() {

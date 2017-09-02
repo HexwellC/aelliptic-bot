@@ -17,6 +17,7 @@
 #include <iostream>
 #include <ctime>
 #include <mutex>
+#include <iomanip>
 
 namespace aelliptic {
     namespace log {
@@ -24,11 +25,13 @@ namespace aelliptic {
         std::ofstream *file;
 
         void init(const char* filename) {
-            _log_mutex.lock();
+            std::lock_guard<std::mutex> lock(_log_mutex);
             file = new std::ofstream();
             file->open(filename);
-            failbit = file->fail();
-            _log_mutex.unlock();
+            if (file->fail()) {
+                std::cerr << "Failed to initialize logging! The bot will exit."
+                          << std::endl;
+            }
         }
 
         void close() {
@@ -40,24 +43,32 @@ namespace aelliptic {
             _log_mutex.unlock();
         }
 
-        void log(const std::string& level, const std::string& msg) {
+        // TODO: Improve everything below
+        static std::time_t time;
+        static std::tm tm;
+        #define TIME_PATTERN "%F %T"
+
+        void getTime() {
+            time = std::time(nullptr);
+            tm = *std::gmtime(&time);
+        }
+
+        void log(const char* level, const char* msg) {
+            getTime();
+            std::cout << std::put_time(&tm, TIME_PATTERN)
+                      << " [" << level << "]: " << msg << std::endl;
             _log_mutex.lock();
-            auto cur_time = std::ctime(nullptr);
-            std::cout << cur_time << " [" << level << "]: " << msg;
-            *file << cur_time << " [" << level << "]: " << msg;
+            *file << std::put_time(&tm, TIME_PATTERN)
+                  << " [" << level << "]: " << msg << std::endl;
             _log_mutex.unlock();
         }
 
-        inline void trace(const std::string& msg) {
 #ifndef AE_NO_TRACE_LOG
-            std::cout << std::ctime(nullptr) << " [TRACE]: " << msg;
-#endif
+        inline void trace(const char* msg) {
+            getTime();
+            std::cout << std::put_time(&tm, TIME_PATTERN)
+                      << " [TRACE]: " << msg << std::endl;
         }
-
-        inline void info(const std::string& msg) { log("INFO", msg); }
-
-        inline void warn(const std::string& msg) { log("WARN", msg); }
-
-        inline void error(const std::string& ex) { log("ERROR", ex); }
+#endif
     }
 };

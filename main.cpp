@@ -15,14 +15,19 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 #include <tgbot/tgbot.h>
-#include "watchdog.hpp"
 #include "logging.hpp"
+#include "watchdog.hpp"
 
 using namespace aelliptic;
 
-int main() {
+int main(int argc, char** argv) {
+    std::cout << "AElliptic Bot  Copyright (C) 2017  HexwellC\nThis program "
+            "comes with ABSOLUTELY NO WARRANTY;\nThis is free software, and "
+            "you are welcome to redistribute it\nunder certain conditions;"
+              << std::endl;
+    std::cout << "See LICENSE file for more details." << std::endl;
     // WatchDog is also a RAII wrapper for everything that needs to be closed
     // on application exit.
-    WatchDog _watcher;
+    WatchDog _watcher("bot.log");
     return 0;
 }
