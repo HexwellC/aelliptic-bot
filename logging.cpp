@@ -25,7 +25,6 @@ namespace aelliptic {
         std::ofstream *file;
 
         void init(const char* filename) {
-            std::lock_guard<std::mutex> lock(_log_mutex);
             file = new std::ofstream();
             file->open(filename);
             if (file->fail()) {
