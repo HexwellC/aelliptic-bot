@@ -38,6 +38,6 @@ int main(int argc, char** argv) {
     log::info("Initializing bot and registering commands");
     //TgBot::Bot _bot(argv[1]);
     bot = Bot(argv[1]);
-    
+
     return 0;
 }
