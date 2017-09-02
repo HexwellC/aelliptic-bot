@@ -15,8 +15,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 #include <tgbot/tgbot.h>
+#include "watchdog.hpp"
+#include "logging.hpp"
+
+using namespace aelliptic;
 
 int main() {
-
+    // WatchDog is also a RAII wrapper for everything that needs to be closed
+    // on application exit.
+    WatchDog _watcher;
     return 0;
 }
