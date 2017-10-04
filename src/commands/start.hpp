@@ -15,8 +15,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef AELLIPTIC_BOT_START_HPP
 #define AELLIPTIC_BOT_START_HPP
-#include "command_base.hpp"
-AECOMM_NS
-    void start(TgBot::Message::Ptr message);
-AECOMM_NS_END
+#include <tgbot/tgbot.h>
+namespace aelliptic::commands {
+void start(TgBot::Message::Ptr message);
+}
 #endif //AELLIPTIC_BOT_START_HPP

@@ -15,11 +15,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef AELLIPTIC_BOT_COMMANDS_HPP
 #define AELLIPTIC_BOT_COMMANDS_HPP
-#include "commands/command_base.hpp"
 #include "commands/start.hpp"
-AECOMM_NS
-    inline void _registerCommands() {
-        //bot->getEvents().onCommand("start", start);
-    }
-AECOMM_NS_END
+namespace aelliptic::commands {
+inline void _registerCommands() {
+    //bot->getEvents().onCommand("start", start);
+}
+}
 #endif //AELLIPTIC_BOT_COMMANDS_HPP
