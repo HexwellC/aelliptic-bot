@@ -13,8 +13,8 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef AELLIPTIC_BOT_OS_H
-#define AELLIPTIC_BOT_OS_H
+#ifndef AELLIPTIC_BOT_LOGGING_HPP
+#define AELLIPTIC_BOT_LOGGING_HPP
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/syscall.h>
@@ -74,4 +74,4 @@ namespace aelliptic {
 #endif
     }
 }
-#endif //AELLIPTIC_BOT_OS_H
+#endif //AELLIPTIC_BOT_LOGGING_HPP

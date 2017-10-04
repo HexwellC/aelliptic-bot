@@ -1,18 +1,22 @@
 cmake_minimum_required(VERSION 2.8)
-project(aelliptic_bot)
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall")
+project(aelliptic-bot)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 set(Boost_USE_MULTITHREADED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(Threads REQUIRED)
 find_package(OpenSSL REQUIRED)
 find_package(Boost COMPONENTS system iostreams REQUIRED)
-include_directories(/usr/local/include ${OPENSSL_INCLUDE_DIR}
-        ${Boost_INCLUDE_DIR} tgbot-cpp/include )
+add_subdirectory(tgbot-cpp)
+include_directories(${OPENSSL_INCLUDE_DIR} ${Boost_INCLUDE_DIR} 
+                    ${CMAKE_CURRENT_SOURCE_DIR}/tgbot-cpp/include)
 option(NO_TRACE_LOG "No trace logging" OFF)
 if (NO_TRACE_LOG)
     add_definitions(-DAE_NO_TRACE_LOG)
 endif()
-set(SOURCE_FILES logging.hpp main.cpp logging.cpp watchdog.hpp watchdog.cpp bot.hpp bot.cpp commands/start.hpp commands/command_base.hpp commands/start.cpp commands.hpp)
-add_executable(aelliptic_bot ${SOURCE_FILES})
-target_link_libraries(aelliptic_bot ${CMAKE_THREAD_LIBS_INIT}
+file(GLOB_RECURSE AEF_BOT_SOURCES src/*.cpp src/*.hpp)
+add_executable(aelliptic-bot ${AEF_BOT_SOURCES})
+target_include_directories(aelliptic-bot PRIVATE 
+                           ${CMAKE_CURRENT_SOURCE_DIR}/tgbot-cpp/include)
+target_link_libraries(aelliptic-bot ${CMAKE_THREAD_LIBS_INIT}
         ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} TgBot)

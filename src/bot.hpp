@@ -13,13 +13,10 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#include "start.hpp"
-AECOMM_NS
-    void start(TgBot::Message::Ptr message) {
-        bot->getApi().sendMessage(message->chat->id, "AElliptic Bot v1.0\n"
-                "Copyright (C) HexwellC 2017, GNU GPLv3, Source code:\n"
-                "https://github.com/HexwellC/aelliptic-bot/\n"
-                "\n"
-                "Currently I can do almost nothing.");
-    }
-AECOMM_NS_END
+#ifndef AELLIPTIC_BOT_BOT_HPP
+#define AELLIPTIC_BOT_BOT_HPP
+#include <tgbot/tgbot.h>
+namespace aelliptic {
+    extern TgBot::Bot bot;
+}
+#endif //AELLIPTIC_BOT_BOT_HPP

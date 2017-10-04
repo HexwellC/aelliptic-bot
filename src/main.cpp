@@ -16,9 +16,11 @@
 #include <iostream>
 #include <tgbot/tgbot.h>
 #include "logging.hpp"
-#include "watchdog.hpp"
-#include "bot.hpp"
 #include "commands.hpp"
+
+namespace aelliptic {
+    TgBot::Bot* bot;
+}
 
 using namespace aelliptic;
 
@@ -34,14 +36,15 @@ int main(int argc, char** argv) {
     }
     // WatchDog is also a RAII wrapper for everything that needs to be closed
     // on application exit.
-    WatchDog _watcher("bot.log");
+    log::init("bot.log");
     log::info("Initializing bot and registering commands");
-    bot = _Bot(argv[1]);
+    TgBot::Bot _bot(argv[1]);
+    bot = &_bot;
     commands::_registerCommands();
     try {
-        std::string str = "Bot username: " + bot->getApi().getMe()->username;
+        std::string str = "Bot username: " + _bot.getApi().getMe()->username;
         log::info(str.c_str());
-        TgBot::TgLongPoll longPoll(*bot._bot);
+        TgBot::TgLongPoll longPoll(_bot);
         while (true) {
             log::trace("Long poll started");
             longPoll.start();
@@ -50,5 +53,6 @@ int main(int argc, char** argv) {
         log::error("Exception occurred in bot poll loop!");
         log::error(e.what());
     }
+    log::close();
     return 0;
 }

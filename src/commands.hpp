@@ -19,7 +19,7 @@
 #include "commands/start.hpp"
 AECOMM_NS
     inline void _registerCommands() {
-        bot->getEvents().onCommand("start", start);
+        //bot->getEvents().onCommand("start", start);
     }
 AECOMM_NS_END
 #endif //AELLIPTIC_BOT_COMMANDS_HPP

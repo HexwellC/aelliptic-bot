@@ -47,7 +47,7 @@ namespace aelliptic {
         static std::tm tm;
         #define TIME_PATTERN "%F %T"
 
-        void getTime() {
+        inline void getTime() {
             time = std::time(nullptr);
             tm = *std::gmtime(&time);
         }

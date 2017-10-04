@@ -13,20 +13,9 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef AELLIPTIC_BOT_BOT_HPP
-#define AELLIPTIC_BOT_BOT_HPP
-
-#include <tgbot/Bot.h>
-
-namespace aelliptic {
-    class _Bot {
-    public:
-        _Bot();
-        _Bot(const char* token);
-        ~_Bot();
-        TgBot::Bot *operator->();
-        TgBot::Bot* _bot = nullptr;
-    };
-    extern _Bot bot;
-}
-#endif //AELLIPTIC_BOT_BOT_HPP
+#ifndef AELLIPTIC_BOT_COMMAND_BASE_HPP
+#define AELLIPTIC_BOT_COMMAND_BASE_HPP
+#include <tgbot/tgbot.h>
+#define AECOMM_NS namespace aelliptic { namespace commands {
+#define AECOMM_NS_END }}
+#endif //AELLIPTIC_BOT_COMMAND_BASE_HPP
