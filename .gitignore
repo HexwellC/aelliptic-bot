@@ -34,7 +34,7 @@
 # User stuff
 ## IntelliJ IDEA files
 .idea/
-## CMake and Make things
+## CMake, Make and all user things
 CMakeCache.txt
 CMakeFiles
 CMakeScripts
@@ -43,9 +43,6 @@ Makefile
 CTestTestfile.cmake
 cmake_install.cmake
 install_manifest.txt
-## Used by Vim
 compile_commands.json
-## Built stuff
 /*build*
-## Something else
-/doc/
+*.kdev4
