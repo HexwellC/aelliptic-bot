@@ -16,10 +16,10 @@
 #include "start.hpp"
 namespace aelliptic::commands {
 void start(TgBot::Message::Ptr message) {
-    /*bot->getApi().sendMessage(message->chat->id, "AElliptic Bot v1.0\n"
+    bot->getApi().sendMessage(message->chat->id, "AElliptic Bot v1.0\n"
                 "Copyright (C) HexwellC 2017, GNU GPLv3, Source code:\n"
                 "https://github.com/HexwellC/aelliptic-bot/\n"
                 "\n"
-                "Currently I can do almost nothing.");*/
+                "Currently I can do almost nothing.");
 }
 }

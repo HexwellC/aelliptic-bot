@@ -17,6 +17,6 @@
 #define AELLIPTIC_BOT_BOT_HPP
 #include <tgbot/tgbot.h>
 namespace aelliptic {
-    extern TgBot::Bot bot;
+    extern TgBot::Bot* bot;
 }
 #endif //AELLIPTIC_BOT_BOT_HPP

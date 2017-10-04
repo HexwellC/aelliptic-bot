@@ -18,7 +18,7 @@
 #include "commands/start.hpp"
 namespace aelliptic::commands {
 inline void _registerCommands() {
-    //bot->getEvents().onCommand("start", start);
+    bot->getEvents().onCommand("start", start);
 }
 }
 #endif //AELLIPTIC_BOT_COMMANDS_HPP
