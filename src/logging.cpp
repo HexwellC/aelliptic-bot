@@ -42,32 +42,17 @@ namespace aelliptic {
             _log_mutex.unlock();
         }
 
-        // TODO: Improve everything below
-        static std::time_t time;
-        static std::tm tm;
-        #define TIME_PATTERN "%F %T"
-
-        inline void getTime() {
+        void log(const char* level, const char* msg) {
+            static std::time_t time;
+            static std::tm tm;
             time = std::time(nullptr);
             tm = *std::gmtime(&time);
-        }
-
-        void log(const char* level, const char* msg) {
-            getTime();
-            std::cout << std::put_time(&tm, TIME_PATTERN)
+            std::cout << std::put_time(&tm, "%F %T")
                       << " [" << level << "]: " << msg << std::endl;
             _log_mutex.lock();
-            *file << std::put_time(&tm, TIME_PATTERN)
+            *file << std::put_time(&tm, "%F %T")
                   << " [" << level << "]: " << msg << std::endl;
             _log_mutex.unlock();
         }
-
-#ifndef AE_NO_TRACE_LOG
-        void trace(const char* msg) {
-            getTime();
-            std::cout << std::put_time(&tm, TIME_PATTERN)
-                      << " [TRACE]: " << msg << std::endl;
-        }
-#endif
     }
 };

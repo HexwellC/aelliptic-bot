@@ -20,6 +20,7 @@
 
 namespace aelliptic {
     TgBot::Bot* bot;
+    bool stop;
 }
 
 using namespace aelliptic;
@@ -38,16 +39,17 @@ int main(int argc, char** argv) {
     // on application exit.
     log::init("bot.log");
     log::info("Initializing bot and registering commands");
+    aelliptic::stop = false;
     TgBot::Bot _bot(argv[1]);
     bot = &_bot;
-    commands::_registerCommands();
+    commands::registerCommands();
     try {
         std::string str = "Bot username: " + _bot.getApi().getMe()->username;
         log::info(str.c_str());
         TgBot::TgLongPoll longPoll(_bot);
         while (true) {
-            log::trace("Long poll started");
             longPoll.start();
+            if (aelliptic::stop) break;
         }
     } catch (TgBot::TgException& e) {
         log::error("Exception occurred in bot poll loop!");

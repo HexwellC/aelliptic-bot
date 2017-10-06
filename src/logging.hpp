@@ -60,18 +60,6 @@ namespace aelliptic {
          * @param ex Error to log
          */
         inline void error(const char* ex) { log("ERROR", ex); }
-
-#ifndef AE_NO_TRACE_LOG
-        /// Trace logger
-        /**
-        * Tracing level is logged only to console. It can be disabled by
-        * defining AE_NO_TRACE_LOG
-        * @param msg Message to log
-        */
-        void trace(const char* msg);
-#else
-        inline void trace(const char* msg) { }
-#endif
     }
 }
 #endif //AELLIPTIC_BOT_LOGGING_HPP
