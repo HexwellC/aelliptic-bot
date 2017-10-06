@@ -16,9 +16,12 @@
 #ifndef AELLIPTIC_BOT_COMMANDS_HPP
 #define AELLIPTIC_BOT_COMMANDS_HPP
 #include "commands/start.hpp"
-namespace aelliptic::commands {
-inline void registerCommands() {
-    bot->getEvents().onCommand("start", start);
-}
-}
+#include "commands/base64.hpp"
+namespace aelliptic { namespace commands {
+    inline void registerCommands() {
+        bot->getEvents().onCommand("start", start);
+        bot->getEvents().onCommand("base64", base64);
+    }
+}}
 #endif //AELLIPTIC_BOT_COMMANDS_HPP
+я
