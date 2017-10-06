@@ -24,4 +24,4 @@ namespace aelliptic { namespace commands {
     }
 }}
 #endif //AELLIPTIC_BOT_COMMANDS_HPP
-я
+
