@@ -13,10 +13,8 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef AELLIPTIC_BOT_BOT_HPP
-#define AELLIPTIC_BOT_BOT_HPP
+#pragma once
 #include <tgbot/tgbot.h>
 namespace aelliptic {
     extern TgBot::Bot* bot;
 }
-#endif //AELLIPTIC_BOT_BOT_HPP

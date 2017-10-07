@@ -13,8 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef AELLIPTIC_BOT_COMMANDS_HPP
-#define AELLIPTIC_BOT_COMMANDS_HPP
+#pragma once
 #include "commands/start.hpp"
 #include "commands/base64.hpp"
 namespace aelliptic { namespace commands {
@@ -23,5 +22,4 @@ namespace aelliptic { namespace commands {
         bot->getEvents().onCommand("base64", base64);
     }
 }}
-#endif //AELLIPTIC_BOT_COMMANDS_HPP
 
