@@ -62,13 +62,90 @@ std::string base64_encode(unsigned char const* bytes_to_encode,
   return ret;
 }
 
+bool is_utf8(const char * string) {
+    if(!string)
+        return 0;
+
+    const unsigned char * bytes = (const unsigned char *)string;
+    while(*bytes)
+    {
+        if( (// ASCII
+             // use bytes[0] <= 0x7F to allow ASCII control characters
+                bytes[0] == 0x09 ||
+                bytes[0] == 0x0A ||
+                bytes[0] == 0x0D ||
+                (0x20 <= bytes[0] && bytes[0] <= 0x7E)
+            )
+        ) {
+            bytes += 1;
+            continue;
+        }
+
+        if( (// non-overlong 2-byte
+                (0xC2 <= bytes[0] && bytes[0] <= 0xDF) &&
+                (0x80 <= bytes[1] && bytes[1] <= 0xBF)
+            )
+        ) {
+            bytes += 2;
+            continue;
+        }
+
+        if( (// excluding overlongs
+                bytes[0] == 0xE0 &&
+                (0xA0 <= bytes[1] && bytes[1] <= 0xBF) &&
+                (0x80 <= bytes[2] && bytes[2] <= 0xBF)
+            ) ||
+            (// straight 3-byte
+                ((0xE1 <= bytes[0] && bytes[0] <= 0xEC) ||
+                    bytes[0] == 0xEE ||
+                    bytes[0] == 0xEF) &&
+                (0x80 <= bytes[1] && bytes[1] <= 0xBF) &&
+                (0x80 <= bytes[2] && bytes[2] <= 0xBF)
+            ) ||
+            (// excluding surrogates
+                bytes[0] == 0xED &&
+                (0x80 <= bytes[1] && bytes[1] <= 0x9F) &&
+                (0x80 <= bytes[2] && bytes[2] <= 0xBF)
+            )
+        ) {
+            bytes += 3;
+            continue;
+        }
+
+        if( (// planes 1-3
+                bytes[0] == 0xF0 &&
+                (0x90 <= bytes[1] && bytes[1] <= 0xBF) &&
+                (0x80 <= bytes[2] && bytes[2] <= 0xBF) &&
+                (0x80 <= bytes[3] && bytes[3] <= 0xBF)
+            ) ||
+            (// planes 4-15
+                (0xF1 <= bytes[0] && bytes[0] <= 0xF3) &&
+                (0x80 <= bytes[1] && bytes[1] <= 0xBF) &&
+                (0x80 <= bytes[2] && bytes[2] <= 0xBF) &&
+                (0x80 <= bytes[3] && bytes[3] <= 0xBF)
+            ) ||
+            (// plane 16
+                bytes[0] == 0xF4 &&
+                (0x80 <= bytes[1] && bytes[1] <= 0x8F) &&
+                (0x80 <= bytes[2] && bytes[2] <= 0xBF) &&
+                (0x80 <= bytes[3] && bytes[3] <= 0xBF)
+            )
+        ) {
+            bytes += 4;
+            continue;
+        }
+        return false;
+    }
+    return true;
+}
+
 std::string base64_decode(std::string const& encoded_string) {
     int in_len = encoded_string.size();
     int i = 0;
     int j = 0;
     int in_ = 0;
     unsigned char char_array_4[4], char_array_3[3];
-    std::string ret;
+    std::string ret = "";
     while (in_len-- && 
           (encoded_string[in_] != '=') && 
           is_base64(encoded_string[in_])) {
@@ -99,20 +176,38 @@ std::string base64_decode(std::string const& encoded_string) {
 }
 
 namespace aelliptic { namespace commands {
+   
+    static void useage(uint64_t id) {
+        bot->getApi().sendMessage(id, 
+                                 "Syntax:\n`/base64 encode <string>`\n"
+                                 "`/base64 decode <base64_string>`",
+                                 true, 0, TgBot::GenericReply::Ptr(),
+                                 "Markdown");
+    }
+    
     void base64(TgBot::Message::Ptr message) {
         std::vector<std::string> tokens;
         boost::trim(message->text);
         boost::split(tokens, message->text, boost::is_any_of("\t "), 
                      boost::token_compress_on);
-        if(tokens.size() < 3) return;
+        if(tokens.size() < 3) { 
+            useage(message->chat->id);
+            return;
+        }
         std::string response;
         if(tokens[1] == "decode") {
             response = base64_decode(tokens[2]);
+            if (!is_utf8(response.c_str())) {
+                bot->getApi().sendMessage(message->chat->id, 
+                                          "ERROR: Invalid base64 string");
+                return;
+            }
         } else if (tokens[1] == "encode") {
             response = base64_encode(reinterpret_cast
                                     <const unsigned char*>(tokens[2].c_str()), 
                                      tokens[2].length());
         } else {
+            useage(message->chat->id);
             return;
         }
         bot->getApi().sendMessage(message->chat->id, response);
