@@ -99,40 +99,27 @@ std::string base64_decode(std::string const& encoded_string) {
 }
 
 namespace aelliptic { namespace commands {
-   
-    static void useage(uint64_t id) {
-        bot->getApi().sendMessage(id, 
-                                 "Syntax:\n`/base64 encode <string>`\n"
-                                 "`/base64 decode <base64_string>`",
-                                 true, 0, TgBot::GenericReply::Ptr(),
-                                 "Markdown");
-    }
-    
-    void base64(TgBot::Message::Ptr message) {
-        std::vector<std::string> tokens;
-        boost::trim(message->text);
-        boost::split(tokens, message->text, boost::is_any_of("\t "), 
-                     boost::token_compress_on);
-        if(tokens.size() < 3) { 
-            useage(message->chat->id);
+    void base64(std::string& from, std::vector<std::string>& params,
+                irc::IRCClient* client) {
+        if (params.size() < 3) {
+            client->send_msg(from, "Syntax: /base64 "
+                                   "<encode/decode> <string>");
             return;
         }
+        
         std::string response;
-        if(tokens[1] == "decode") {
-            response = base64_decode(tokens[2]);
-        } else if (tokens[1] == "encode") {
+        if(params[1] == "decode") {
+            response = base64_decode(params[2]);
+        } else if (params[1] == "encode") {
             response = base64_encode(reinterpret_cast
-                                    <const unsigned char*>(tokens[2].c_str()), 
-                                     tokens[2].length());
+                                    <const unsigned char*>(params[2].c_str()), 
+                                     params[2].length());
         } else {
-            useage(message->chat->id);
+            client->send_msg(from, "Syntax: base64 "
+                                   "<encode/decode> <string>");
             return;
         }
-        try {
-            bot->getApi().sendMessage(message->chat->id, response);
-        } catch (...) { 
-            bot->getApi().sendMessage(message->chat->id, 
-                                      "ERROR: Invalid input");
-        }
+        
+        client->send_msg(from, response);
     }
 }}

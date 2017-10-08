@@ -13,21 +13,19 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#include <signal.h>
 #include <iostream>
+#include <sstream>
 #include "database.hpp"
 #include "logging.hpp"
-#include "commands.hpp"
+#include "irc_client.hpp"
 
-namespace aelliptic {
-    TgBot::Bot* bot;
-    bool stop;
-}
+static bool running;
 
 using namespace aelliptic;
 
-void shutdown() {
-    aelliptic::database::free();
-    log::close();
+void shutdown(int signal) {
+    running = false;
 }
 
 int main(int argc, char** argv) {
@@ -37,23 +35,45 @@ int main(int argc, char** argv) {
               << std::endl;
     std::cout << "See LICENSE file for more details." << std::endl;
     if (argc < 3) {
-        std::cerr << "No token supplied!" << std::endl;
+        std::cerr << "Usage: ./aelliptic-bot <host> <port> [nick] [user]" 
+                  << std::endl;
         return 1;
     }
+    char* host = argv[1];
+    int port = std::atoi(argv[2]);
+    std::string nick("AEllipticBot");
+    std::string user("AEllipticBot");
+    if (argc >= 4) nick = argv[3];
+    if (argc >= 5) user = argv[4];
+    log::init("bot.log");
+    log::info("Initializing bot and registering commands");
+    database::init();
+    irc::IRCClient client;
     {
-        char* host = argv[1];
-        int port = std::atoi(argv[2]);
-        log::init("bot.log");
-        log::info("Initializing bot and registering commands");
-        aelliptic::stop = false;
-        std::string nick("AEllipticBot");
-        std::string user("AEllipticBot");
-        if (argc >= 4) nick = argv[3];
-        if (argc >= 5) user = argv[4];
-        aelliptic::database::init();
+        std::stringstream s;
+        s << "Connecting to server: " << host << ":" << port;
+        log::info(s.str());
     }
-    // TODO: bot loop
-    commands::registerCommands();
-    shutdown();
+    if (client.connect(host, port)) {
+        {
+            std::stringstream s;
+            s << "Logging in as " << nick << "(" << user << ")";
+            log::info(s.str());
+        }
+        if (client.login(nick, user)) {
+            log::info("Successfully logged in.");
+            signal(SIGINT, shutdown);
+            running = true;
+            client.send_raw("JOIN #ungovernable");
+            while (client.is_connected() && running) client.receive();
+            running = false;
+        }
+        if (client.is_connected()) {
+            client.disconnect();
+        }
+    }
+    shutdown(0);
+    aelliptic::database::free();
+    log::close();
     return 0;
 }

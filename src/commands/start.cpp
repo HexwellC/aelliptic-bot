@@ -14,13 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "start.hpp"
+
 namespace aelliptic { namespace commands {
-    void start(TgBot::Message::Ptr message) {
-        std::string msg = "AElliptic Bot v1.0\n"
-                    "Copyright (C) HexwellC 2017, GNU GPLv3, Source code:\n"
-                    "https://github.com/HexwellC/aelliptic-bot/\n"
-                    "\n"
-                    "Currently I can do almost nothing.";
-        bot->getApi().sendMessage(message->chat->id, msg);
+    void start(std::string& from, std::vector<std::string>& params,
+               irc::IRCClient* client) {
+        std::string msg = "AElliptic Bot v1.0, "
+                    "Copyright (C) HexwellC 2017, GNU GPLv3, Source code: "
+                    "https://github.com/HexwellC/aelliptic-bot/";
+        client->send_msg(from, msg);
     }
 }}

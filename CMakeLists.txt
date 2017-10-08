@@ -26,10 +26,15 @@ find_package(Boost COMPONENTS system iostreams REQUIRED)
 find_package(SQLite3 REQUIRED)
 include_directories(${OPENSSL_INCLUDE_DIR} ${Boost_INCLUDE_DIR} 
                     src ${SQLITE3_INCLUDE_DIRS})
-set(BOT_SOURCES src/main.cpp src/logging.cpp)
+set(BOT_SOURCES 
+    src/main.cpp
+    src/logging.cpp
+    src/irc_client.cpp
+    src/irc_handler.cpp
+    src/irc_socket.cpp
+    src/database.cpp)
 set(BOT_COMMANDS 
     src/commands/start.cpp 
-    src/database.cpp
     src/commands/base64.cpp)
 add_executable(aelliptic-bot ${BOT_SOURCES} ${BOT_COMMANDS})
 target_include_directories(aelliptic-bot PRIVATE 

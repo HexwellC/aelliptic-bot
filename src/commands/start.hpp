@@ -14,7 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
-#include "bot.hpp"
+
+#include "irc_client.hpp"
+
 namespace aelliptic { namespace commands {
-    void start(TgBot::Message::Ptr message);
+    void start(std::string& from, std::vector<std::string>& params,
+               irc::IRCClient* client);
 }}

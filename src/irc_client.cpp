@@ -13,14 +13,14 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#include "irc_client.hpp"
 #include <iostream>
 #include <algorithm>
 #include <sstream>
-#include "irc_client.hpp"
 #include "irc_handler.hpp"
 
 namespace aelliptic { namespace irc {
-    std::vector<std::string> split(std::string const& text, char sep) {
+    std::vector<std::string> split(const std::string& text, char sep) {
         std::vector<std::string> tokens;
         size_t start = 0, end = 0;
         while ((end = text.find(sep, start)) != std::string::npos) {
@@ -39,7 +39,7 @@ namespace aelliptic { namespace irc {
         _socket.disconnect();
     }
 
-    bool IRCClient::send_irc(std::string data) {
+    bool IRCClient::send_raw(std::string data) {
         data.append("\n");
         return _socket.send(data.c_str());
     }
@@ -49,11 +49,11 @@ namespace aelliptic { namespace irc {
         _nick = nick;
         _user = user;
 
-        if (send_irc("HELLO")) {
-            if (!password.empty() && !send_irc("PASS "+password))
+        if (send_raw("HELLO")) {
+            if (!password.empty() && !send_raw("PASS "+password))
                 return false;
-            if (send_irc("NICK " + nick))
-                if (send_irc("USER " + user + " 8 * :Cpp IRC Client"))
+            if (send_raw("NICK " + nick))
+                if (send_raw("USER " + user + " 8 * :Cpp IRC Client"))
                     return true;
         }
         
@@ -116,7 +116,7 @@ namespace aelliptic { namespace irc {
 
         if (command == "PING") {
             std::cout << "Ping? Pong!" << std::endl;
-            send_irc("PONG :" + parameters.at(0));
+            send_raw("PONG :" + parameters.at(0));
             return;
         }
 
@@ -127,8 +127,7 @@ namespace aelliptic { namespace irc {
         if (commandIndex < NUM_IRC_CMDS) {
             IRCCommandHandler& cmdHandler = ircCommandTable[commandIndex];
             (this->*cmdHandler.handler)(ircMessage);
-        } else if (_debug)
-            std::cout << original << std::endl;
+        }
 
         // Try to call hook (if any matches)
         CallHook(command, ircMessage);
@@ -155,6 +154,14 @@ namespace aelliptic { namespace irc {
                 break;
             }
         }
+    }
+    
+    bool IRCClient::is_connected() {
+        return _socket.is_connected();
+    }
+    
+    bool IRCClient::send_msg(std::string target, std::string data) {
+        return send_raw("PRIVMSG " + target + " :" + data);
     }
 }}
 

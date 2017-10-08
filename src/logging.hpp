@@ -42,14 +42,14 @@ namespace aelliptic {
          * Simply logs a message with INFO flag.
          * @param msg Message to log
          */
-        inline void info(const char* msg) { log("INFO", msg); }
+        inline void info(std::string msg) { log("INFO", msg.c_str()); }
 
         /// Warning logger
         /**
          * Logs a warning. Almost no difference with info level, except flag.
          * @param msg Message to log
          */
-        inline void warn(const char* msg) { log("WARN", msg); }
+        inline void warn(std::string msg) { log("WARN", msg.c_str()); }
 
         /// Error logger
         /**
@@ -58,6 +58,6 @@ namespace aelliptic {
          * Seriously.
          * @param ex Error to log
          */
-        inline void error(const char* ex) { log("ERROR", ex); }
+        inline void error(std::string ex) { log("ERROR", ex.c_str()); }
     }
 }

@@ -23,10 +23,10 @@
 namespace aelliptic { namespace irc {
     class IRCClient;
 
-    extern std::vector<std::string> split(std::string const&, char);
+    extern std::vector<std::string> split(const std::string&, char);
 
     struct IRCCommandPrefix {
-        void Parse(std::string data) {
+        void parse(std::string data) {
             if (data == "") return;
 
             prefix = data.substr(1, data.find(" ") - 1);
@@ -71,13 +71,12 @@ namespace aelliptic { namespace irc {
 
     class IRCClient {
     public:
-        IRCClient() : _debug(false) {};
-
         bool connect(char* /*host*/, int /*port*/);
         void disconnect();
-        bool is_connected() { return _socket.is_connected(); };
+        bool is_connected();
 
-        bool send_irc(std::string /*data*/);
+        bool send_raw(std::string /*data*/);
+        bool send_msg(std::string /*target*/, std::string /*data*/);
 
         bool login(std::string /*nick*/, std::string /*user*/, 
                    std::string /*password*/ = std::string());
@@ -85,8 +84,8 @@ namespace aelliptic { namespace irc {
         void receive();
 
         void hook_command(std::string /*command*/, 
-                            void (*function)(IRCMessage /*message*/, 
-                                             IRCClient* /*client*/));
+                          void (*function)(IRCMessage /*message*/, 
+                                           IRCClient* /*client*/));
 
         void parse(std::string /*data*/);
 
@@ -102,8 +101,6 @@ namespace aelliptic { namespace irc {
         void HandleNicknameInUse(IRCMessage /*message*/);
         void HandleServerMessage(IRCMessage /*message*/);
 
-        void Debug(bool debug) { _debug = debug; };
-
     private:
         void HandleCommand(IRCMessage /*message*/);
         void CallHook(std::string /*command*/, IRCMessage /*message*/);
@@ -114,8 +111,5 @@ namespace aelliptic { namespace irc {
 
         std::string _nick;
         std::string _user;
-
-        bool _debug;
     };
 }}
-

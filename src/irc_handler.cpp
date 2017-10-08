@@ -2,6 +2,10 @@
 #include "logging.hpp"
 #include <iostream>
 #include <sstream>
+#include <unordered_map>
+#include <functional>
+#include "commands/start.hpp"
+#include "commands/base64.hpp"
 
 namespace aelliptic { namespace irc {
     IRCCommandHandler ircCommandTable[NUM_IRC_CMDS] = {
@@ -45,17 +49,27 @@ namespace aelliptic { namespace irc {
 
         if (to == _nick) {
             if (text == "VERSION") { // Respond to CTCP VERSION
-                send_irc("NOTICE " + message.prefix.nick + 
+                send_raw("NOTICE " + message.prefix.nick + 
                          ":\001v1 - AElliptic Bot\001");
                 return;
             }
 
             // CTCP not implemented
-            send_irc("NOTICE " + message.prefix.nick + " :\001ERRMSG " + 
+            send_raw("NOTICE " + message.prefix.nick + " :\001ERRMSG " + 
                 text + ":Not implemented\001");
         }
     }
 
+    static std::unordered_map<std::string, 
+                              std::function<void(std::string&,
+                                                 std::vector<std::string>&,
+                                                 irc::IRCClient*)>>
+        commands
+        {
+            {"!start", commands::start},
+            {"!base64", commands::base64}
+        };
+       
     void IRCClient::HandlePrivMsg(IRCMessage message) {
         std::string to = message.parameters.at(0);
         std::string text = message.parameters.at(message.parameters.size() - 1);
@@ -65,13 +79,23 @@ namespace aelliptic { namespace irc {
             handle_ctcp(message);
             return;
         }
+        
+        if (text[0] != '!') return;
 
-        if (to[0] == '#')
+        if (to[0] == '#') {
             std::cout << "From " + message.prefix.nick << " @ " + to + ": " 
                       << text << std::endl;
-        else
+        } else {
             std::cout << "From " + message.prefix.nick << ": " 
                       << text << std::endl;
+            to = message.prefix.nick;
+        }
+        
+        message.parameters = split(text, ' ');
+        
+        auto it = commands.find(message.parameters[0]);
+        if (it == commands.end()) return;
+        it->second(to, message.parameters, this);
     }
 
     void IRCClient::HandleNotice(IRCMessage message) {
