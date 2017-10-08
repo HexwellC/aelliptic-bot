@@ -1,9 +1,7 @@
 # AElliptic Bot
 
-AElliptic Bot - Telegram bot developed specially for [AEF 
-group](https://t.me/aefoundation). The goal is to provide some new or already 
-seen functionality but implemented in C++ in the sane way. Just for 
-lulz ¯\\\_(ツ)\_/¯
+AElliptic Bot - Telegram bot developed specially for Ungovernable IRC server 
+¯\\\_(ツ)\_/¯
 
 ## Contribution
 

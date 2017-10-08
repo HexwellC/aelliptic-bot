@@ -13,14 +13,3 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#pragma once
-#include <vector>
-#include <string>
-
-namespace aelliptic { namespace database {
-    std::vector<std::string>&& exec(const char* sql);
-    
-    int init();
-    
-    void free();
-}}

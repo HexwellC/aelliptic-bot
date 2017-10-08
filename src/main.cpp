@@ -1,4 +1,4 @@
-// AElliptic Bot - bot for Autistic Epilepsy Foundation chat in Telegram
+// AElliptic Bot - bot for Ungovernable IRC
 // Copyright (C) 2017  HexwellC
 //
 // This program is free software: you can redistribute it and/or modify
@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
+#include "database.hpp"
 #include "logging.hpp"
 #include "commands.hpp"
 
@@ -24,36 +25,35 @@ namespace aelliptic {
 
 using namespace aelliptic;
 
+void shutdown() {
+    aelliptic::database::free();
+    log::close();
+}
+
 int main(int argc, char** argv) {
     std::cout << "AElliptic Bot  Copyright (C) 2017  HexwellC\nThis program "
             "comes with ABSOLUTELY NO WARRANTY;\nThis is free software, and "
             "you are welcome to redistribute it\nunder certain conditions;"
               << std::endl;
     std::cout << "See LICENSE file for more details." << std::endl;
-    if (argc < 2) {
+    if (argc < 3) {
         std::cerr << "No token supplied!" << std::endl;
         return 1;
     }
-    // WatchDog is also a RAII wrapper for everything that needs to be closed
-    // on application exit.
-    log::init("bot.log");
-    log::info("Initializing bot and registering commands");
-    aelliptic::stop = false;
-    TgBot::Bot _bot(argv[1]);
-    bot = &_bot;
-    commands::registerCommands();
-    try {
-        std::string str = "Bot username: " + _bot.getApi().getMe()->username;
-        log::info(str.c_str());
-        TgBot::TgLongPoll longPoll(_bot);
-        while (true) {
-            longPoll.start();
-            if (aelliptic::stop) break;
-        }
-    } catch (TgBot::TgException& e) {
-        log::error("Exception occurred in bot poll loop!");
-        log::error(e.what());
+    {
+        char* host = argv[1];
+        int port = std::atoi(argv[2]);
+        log::init("bot.log");
+        log::info("Initializing bot and registering commands");
+        aelliptic::stop = false;
+        std::string nick("AEllipticBot");
+        std::string user("AEllipticBot");
+        if (argc >= 4) nick = argv[3];
+        if (argc >= 5) user = argv[4];
+        aelliptic::database::init();
     }
-    log::close();
+    // TODO: bot loop
+    commands::registerCommands();
+    shutdown();
     return 0;
 }

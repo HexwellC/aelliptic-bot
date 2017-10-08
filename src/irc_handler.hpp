@@ -13,14 +13,22 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#pragma once
-#include <vector>
-#include <string>
+#include "irc_client.hpp"
 
-namespace aelliptic { namespace database {
-    std::vector<std::string>&& exec(const char* sql);
-    
-    int init();
-    
-    void free();
+#define NUM_IRC_CMDS 26
+
+namespace aelliptic { namespace irc {
+    struct IRCCommandHandler {
+        std::string command;
+        void (IRCClient::*handler)(IRCMessage /*message*/);
+    };
+
+    extern IRCCommandHandler ircCommandTable[NUM_IRC_CMDS];
+
+    inline int GetCommandHandler(std::string command) {
+        for (int i = 0; i < NUM_IRC_CMDS; ++i)
+            if (ircCommandTable[i].command == command) return i;
+
+        return NUM_IRC_CMDS;
+    }
 }}

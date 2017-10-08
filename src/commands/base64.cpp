@@ -1,4 +1,4 @@
-// AElliptic Bot - bot for Autistic Epilepsy Foundation chat in Telegram
+// AElliptic Bot - bot for Ungovernable IRC
 // Copyright (C) 2017  HexwellC
 //
 // This program is free software: you can redistribute it and/or modify
