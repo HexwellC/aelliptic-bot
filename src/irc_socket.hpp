@@ -1,4 +1,4 @@
-// AElliptic Bot - bot for Autistic Epilepsy Foundation chat in Telegram
+// AElliptic Bot - bot for Ungovernable IRC
 // Copyright (C) 2017  HexwellC
 //
 // This program is free software: you can redistribute it and/or modify
@@ -14,7 +14,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
-#include <tgbot/tgbot.h>
-namespace aelliptic {
-    extern TgBot::Bot* bot;
-}
+
+#include <string>
+
+namespace aelliptic { namespace irc {
+    class IRCSocket {
+    public:
+        IRCSocket();
+        ~IRCSocket();
+    
+        bool connect(const char* host, int port);
+        void disconnect();
+
+        bool is_connected() { return _connected; };
+
+        bool send(const char* data);
+        std::string receive();
+    
+    private:
+        int _socket;
+        bool _connected;
+    };
+}}
