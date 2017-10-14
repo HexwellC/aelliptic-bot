@@ -30,10 +30,7 @@ namespace aelliptic { namespace commands {
     }
     
     void base64(TgBot::Message::Ptr message) {
-        std::vector<std::string> tokens;
-        boost::trim(message->text);
-        boost::split(tokens, message->text, boost::is_any_of("\t "), 
-                     boost::token_compress_on);
+        std::vector<std::string> tokens = tokenize(message);
         if(tokens.size() < 3) { 
             usage(message->chat->id);
             return;

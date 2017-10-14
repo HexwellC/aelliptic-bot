@@ -31,6 +31,7 @@ using namespace aelliptic;
 void sigint(int) {
     if (stop) {
         log::error("SIGINT caught, forcing exit with error");
+        log::close();
         std::exit(1);
     }
     log::warn("SIGINT caught, bot will exit after any network event");
@@ -49,7 +50,6 @@ int main(int argc, char** argv) {
     }
     log::init("bot.log");
     log::info("Initializing bot and registering commands");
-    aelliptic::stop = false;
     TgBot::Bot _bot(argv[1]);
     bot = &_bot;
     std::string shutdown_token;
@@ -80,6 +80,7 @@ int main(int argc, char** argv) {
         log::info(str.c_str());
         TgBot::TgLongPoll longPoll(_bot);
         std::signal(SIGINT, sigint);
+        aelliptic::stop = false;
         while (true) {
             longPoll.start();
             if (aelliptic::stop) break;
