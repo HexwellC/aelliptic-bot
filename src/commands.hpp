@@ -18,6 +18,7 @@
 #include "commands/start.hpp"
 #include "commands/base64.hpp"
 #include "commands/convert.hpp"
+
 namespace aelliptic { namespace commands {
     inline void register_commands() {
         bot->getEvents().onCommand("start", start);
