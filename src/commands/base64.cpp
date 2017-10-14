@@ -21,7 +21,7 @@
 
 namespace aelliptic { namespace commands {
    
-    static void useage(uint64_t id) {
+    static inline void usage(uint64_t id) {
         bot->getApi().sendMessage(id, 
                                  "Syntax:\n`/base64 encode <string>`\n"
                                  "`/base64 decode <base64_string>`",
@@ -35,7 +35,7 @@ namespace aelliptic { namespace commands {
         boost::split(tokens, message->text, boost::is_any_of("\t "), 
                      boost::token_compress_on);
         if(tokens.size() < 3) { 
-            useage(message->chat->id);
+            usage(message->chat->id);
             return;
         }
         std::string response;
@@ -46,7 +46,7 @@ namespace aelliptic { namespace commands {
                                     <const unsigned char*>(tokens[2].c_str()), 
                                      tokens[2].length());
         } else {
-            useage(message->chat->id);
+            usage(message->chat->id);
             return;
         }
         try {
