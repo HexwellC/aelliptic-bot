@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
     aelliptic::stop = false;
     TgBot::Bot _bot(argv[1]);
     bot = &_bot;
-    commands::registerCommands();
+    commands::register_commands();
     try {
         std::string str = "Bot username: " + _bot.getApi().getMe()->username;
         log::info(str.c_str());
