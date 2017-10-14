@@ -15,9 +15,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
-#include "bot.hpp"
+#include "string"
 
-namespace aelliptic { namespace commands {
-    void base64(TgBot::Message::Ptr message);
-}}
-
+namespace aelliptic {
+    std::string base64_decode(std::string const& encoded_string);
+    std::string base64_encode(unsigned char const* bytes_to_encode, 
+                              unsigned int in_len);
+}

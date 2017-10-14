@@ -16,6 +16,10 @@
 #include <iostream>
 #include "logging.hpp"
 #include "commands.hpp"
+#include <random>
+#include <sstream>
+#include "base64.hpp"
+#include <csignal>
 
 namespace aelliptic {
     TgBot::Bot* bot;
@@ -23,6 +27,16 @@ namespace aelliptic {
 }
 
 using namespace aelliptic;
+
+void sigint(int) {
+    if (stop) {
+        log::error("SIGINT caught, forcing exit with error");
+        log::close();
+        std::exit(1);
+    }
+    log::warn("SIGINT caught, bot will exit after any network event");
+    stop = true;
+}
 
 int main(int argc, char** argv) {
     std::cout << "AElliptic Bot  Copyright (C) 2017  HexwellC\nThis program "
@@ -34,18 +48,39 @@ int main(int argc, char** argv) {
         std::cerr << "No token supplied!" << std::endl;
         return 1;
     }
-    // WatchDog is also a RAII wrapper for everything that needs to be closed
-    // on application exit.
     log::init("bot.log");
     log::info("Initializing bot and registering commands");
-    aelliptic::stop = false;
     TgBot::Bot _bot(argv[1]);
     bot = &_bot;
-    commands::registerCommands();
+    std::string shutdown_token;
+    { // Creating shutdown token
+        std::random_device device;
+        unsigned x = 0;
+        std::stringstream ss;
+        for (int i = 0; i < 8; i++) {
+            x = device();
+            ss << x;
+        }
+        shutdown_token = ss.str();
+        shutdown_token = base64_encode(reinterpret_cast<const unsigned char*> 
+                                       (shutdown_token.c_str()), 
+                                       shutdown_token.length());
+        std::cout << "Generated shutdown token: " 
+                  << shutdown_token << std::endl;
+    }
+    _bot.getEvents().onCommand("shutdown", 
+    [&shutdown_token, &_bot](TgBot::Message::Ptr message) {
+        if (message->text.substr(10) == shutdown_token) {
+            aelliptic::stop = true;
+        }
+    });
+    commands::register_commands();
     try {
         std::string str = "Bot username: " + _bot.getApi().getMe()->username;
         log::info(str.c_str());
         TgBot::TgLongPoll longPoll(_bot);
+        std::signal(SIGINT, sigint);
+        aelliptic::stop = false;
         while (true) {
             longPoll.start();
             if (aelliptic::stop) break;

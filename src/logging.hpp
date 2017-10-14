@@ -13,8 +13,8 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef AELLIPTIC_BOT_LOGGING_HPP
-#define AELLIPTIC_BOT_LOGGING_HPP
+#pragma once
+
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/syscall.h>
@@ -62,4 +62,3 @@ namespace aelliptic {
         inline void error(const char* ex) { log("ERROR", ex); }
     }
 }
-#endif //AELLIPTIC_BOT_LOGGING_HPP

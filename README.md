@@ -13,6 +13,6 @@ following files:
 * src/commands.hpp (for commands registration)
 * src/commands/ (directory for all commands)
 
-Styling is simple: 80 symbols per line, camelCase prefered, license header 
-required everywhere and, obviously, 4 spaces.
+Styling is simple: 80 symbols per line, snake_case prefered, license 
+header required everywhere and, obviously, 4 spaces.
 

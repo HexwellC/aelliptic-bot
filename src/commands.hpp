@@ -13,15 +13,16 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef AELLIPTIC_BOT_COMMANDS_HPP
-#define AELLIPTIC_BOT_COMMANDS_HPP
+#pragma once
+
 #include "commands/start.hpp"
 #include "commands/base64.hpp"
+#include "commands/convert.hpp"
 namespace aelliptic { namespace commands {
-    inline void registerCommands() {
+    inline void register_commands() {
         bot->getEvents().onCommand("start", start);
         bot->getEvents().onCommand("base64", base64);
+        bot->getEvents().onCommand("convert", convert);
     }
 }}
-#endif //AELLIPTIC_BOT_COMMANDS_HPP
 
