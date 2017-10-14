@@ -19,6 +19,7 @@
 #include <random>
 #include <sstream>
 #include "base64.hpp"
+#include <csignal>
 
 namespace aelliptic {
     TgBot::Bot* bot;
@@ -26,6 +27,15 @@ namespace aelliptic {
 }
 
 using namespace aelliptic;
+
+void sigint(int) {
+    if (stop) {
+        log::error("SIGINT caught, forcing exit with error");
+        std::exit(1);
+    }
+    log::warn("SIGINT caught, bot will exit after any network event");
+    stop = true;
+}
 
 int main(int argc, char** argv) {
     std::cout << "AElliptic Bot  Copyright (C) 2017  HexwellC\nThis program "
@@ -55,23 +65,21 @@ int main(int argc, char** argv) {
         shutdown_token = base64_encode(reinterpret_cast<const unsigned char*> 
                                        (shutdown_token.c_str()), 
                                        shutdown_token.length());
-        std::cout << "Generated shutdown token: " << shutdown_token;
+        std::cout << "Generated shutdown token: " 
+                  << shutdown_token << std::endl;
     }
-    commands::register_commands();
     _bot.getEvents().onCommand("shutdown", 
     [&shutdown_token, &_bot](TgBot::Message::Ptr message) {
-        std::stringstream ss;
-        ss << "/shutdown " << shutdown_token;
-        if (shutdown_token == ss.str()) {
+        if (message->text.substr(10) == shutdown_token) {
             aelliptic::stop = true;
-            _bot.getApi().sendMessage(message->chat->id, 
-                                      "Bot will shut down after any event");
         }
     });
+    commands::register_commands();
     try {
         std::string str = "Bot username: " + _bot.getApi().getMe()->username;
         log::info(str.c_str());
         TgBot::TgLongPoll longPoll(_bot);
+        std::signal(SIGINT, sigint);
         while (true) {
             longPoll.start();
             if (aelliptic::stop) break;
