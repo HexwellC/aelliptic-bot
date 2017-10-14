@@ -69,18 +69,17 @@ int main(int argc, char** argv) {
                   << shutdown_token << std::endl;
     }
     _bot.getEvents().onCommand("shutdown", 
-    [&shutdown_token, &_bot](TgBot::Message::Ptr message) {
+    [&shutdown_token](TgBot::Message::Ptr message) {
         if (message->text.substr(10) == shutdown_token) {
             aelliptic::stop = true;
         }
     });
     commands::register_commands();
     try {
-        std::string str = "Bot username: " + _bot.getApi().getMe()->username;
-        log::info(str.c_str());
         TgBot::TgLongPoll longPoll(_bot);
         std::signal(SIGINT, sigint);
         aelliptic::stop = false;
+        log::info("Started, listening for updates");
         while (true) {
             longPoll.start();
             if (aelliptic::stop) break;

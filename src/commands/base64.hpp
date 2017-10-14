@@ -18,6 +18,6 @@
 #include "bot.hpp"
 
 namespace aelliptic { namespace commands {
-    void base64(TgBot::Message::Ptr message);
+    void base64(const TgBot::Message::Ptr& message);
 }}
 

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "base64.hpp"
+#include "./base64.hpp"
 #include "../base64.hpp"
 #include <vector>
 #include <boost/algorithm/string.hpp>
@@ -29,9 +29,9 @@ namespace aelliptic { namespace commands {
                                  "Markdown");
     }
     
-    void base64(TgBot::Message::Ptr message) {
+    void base64(const TgBot::Message::Ptr& message) {
         std::vector<std::string> tokens = tokenize(message);
-        if(tokens.size() < 3) { 
+        if(tokens.size() < 3) {
             usage(message->chat->id);
             return;
         }

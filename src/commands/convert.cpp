@@ -16,7 +16,6 @@
 
 #include "convert.hpp"
 #include <boost/algorithm/string.hpp>
-#include <stdlib.h>
 #include <string>
 
 double convert_temp(std::string in_what, std::string data){
@@ -34,22 +33,13 @@ double convert_temp(std::string in_what, std::string data){
     else if(in_what == "K/F")
         return (atof(data.c_str()) * 1.8 + 32) + 273;
     
-    throw std::logic_error("description");
+    throw std::exception();
 }
 
 
 namespace aelliptic { namespace commands {
 
-    static void usage_iw(uint64_t id) {
-    bot->getApi().sendMessage(id, 
-                             "Syntax:\n`/convert <what> <from>/<to> <data>`\n"
-                             "Please enter correct data in <from>/<to> space"
-                             "eg: F/C, C/F",
-                             true, 0, TgBot::GenericReply::Ptr(),
-                             "Markdown");
-}
-
-    static void convert_usage(uint64_t id) {
+    static inline void convert_usage(uint64_t id) {
         bot->getApi().sendMessage(id, 
                                  "Syntax:\n`/convert <what> <from>/<to>"
                                  "<data>`\n",
@@ -58,7 +48,7 @@ namespace aelliptic { namespace commands {
     }
 
     
-    void convert(TgBot::Message::Ptr message) {
+    void convert(const TgBot::Message::Ptr& message) {
         std::vector<std::string> tokens = tokenize(message);
         if(tokens.size() < 4) { 
             convert_usage(message->chat->id);
@@ -71,7 +61,12 @@ namespace aelliptic { namespace commands {
                 ss << convert_temp(tokens[2], tokens[3]);
                 response = ss.str();
             } catch(...) {
-                usage_iw(message->chat->id);
+                bot->getApi().sendMessage(message->chat->id, 
+                             "Syntax:\n`/convert <what> <from>/<to> <data>`\n"
+                             "Please enter correct data in <from>/<to> space"
+                             "eg: F/C, C/F",
+                             true, 0, TgBot::GenericReply::Ptr(),
+                             "Markdown");
                 return;
             }
         } else {

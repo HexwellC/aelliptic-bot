@@ -22,11 +22,12 @@
 namespace aelliptic {
     extern TgBot::Bot* bot;
     
-    inline std::vector<std::string>&& tokenize(TgBot::Message::Ptr& message) {
+    inline 
+    std::vector<std::string> tokenize(const TgBot::Message::Ptr& message) {
         std::vector<std::string> tokens;
         boost::trim(message->text);
         boost::split(tokens, message->text, boost::is_any_of("\t "), 
                      boost::token_compress_on);
-        return std::move(tokens);
+        return tokens;
     }
 }

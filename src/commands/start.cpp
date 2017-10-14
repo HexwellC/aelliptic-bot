@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "start.hpp"
 namespace aelliptic { namespace commands {
-    void start(TgBot::Message::Ptr message) {
+    void start(const TgBot::Message::Ptr& message) {
         std::string msg = "AElliptic Bot v1.0\n"
                     "Copyright (C) HexwellC 2017, GNU GPLv3, Source code:\n"
                     "https://github.com/HexwellC/aelliptic-bot/\n"

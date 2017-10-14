@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(aelliptic-bot)
+project(aelliptic-bot CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic")
 set(Boost_USE_MULTITHREADED ON)
@@ -19,7 +19,7 @@ endif()
 set(BOT_SOURCES src/main.cpp src/logging.cpp src/base64.cpp)
 set(BOT_COMMANDS src/commands/start.cpp src/commands/base64.cpp src/commands/convert.cpp)
 add_executable(aelliptic-bot ${BOT_SOURCES} ${BOT_COMMANDS})
-target_include_directories(aelliptic-bot PRIVATE 
+target_include_directories(aelliptic-bot SYSTEM PRIVATE 
                            tgbot-cpp/include
                            ${SQLITE3_INCLUDE_DIRS})
 target_link_libraries(aelliptic-bot ${CMAKE_THREAD_LIBS_INIT}

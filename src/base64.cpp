@@ -48,12 +48,12 @@ namespace aelliptic {
                 
                 char_array_4[3] = char_array_3[2] & 0x3f;
                 
-                for(i = 0; (i <4) ; i++) ret += chars[char_array_4[i]];
+                for(i = 0; (i < 4); i++) ret += chars[char_array_4[i]];
                 
                 i = 0;
             }
         }
-        if (i) {
+        if (i != 0) {
             for(j = i; j < 3; j++)
                 char_array_3[j] = '\0';
             
@@ -72,7 +72,7 @@ namespace aelliptic {
         return ret;
     }
 
-    std::string base64_decode(std::string const& encoded_string) {
+    std::string base64_decode(const std::string& encoded_string) {
         int in_len = encoded_string.size();
         int i = 0;
         int j = 0;
@@ -87,8 +87,8 @@ namespace aelliptic {
             char_array_4[i++] = encoded_string[in_];
             in_++;
             
-            if (i ==4) {
-                for (i = 0; i <4; i++) 
+            if (i == 4) {
+                for (i = 0; i < 4; i++) 
                     char_array_4[i] = chars.find(char_array_4[i]);
             
                 char_array_3[0] = (char_array_4[0] << 2) + 
@@ -105,7 +105,7 @@ namespace aelliptic {
                 i = 0;
             }
         }
-        if (i) {
+        if (i != 0) {
             for (j = 0; j < i; j++) 
                 char_array_4[j] = chars.find(char_array_4[j]);
             

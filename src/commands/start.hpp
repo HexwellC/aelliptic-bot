@@ -18,5 +18,5 @@
 #include "bot.hpp"
 
 namespace aelliptic { namespace commands {
-    void start(TgBot::Message::Ptr message);
+    void start(const TgBot::Message::Ptr& message);
 }}

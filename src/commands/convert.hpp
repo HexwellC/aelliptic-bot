@@ -18,5 +18,5 @@
 #include "bot.hpp"
 
 namespace aelliptic { namespace commands {
-    void convert(TgBot::Message::Ptr message);
+    void convert(const TgBot::Message::Ptr& message);
 }}
