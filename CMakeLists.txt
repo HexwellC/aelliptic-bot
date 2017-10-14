@@ -17,7 +17,7 @@ if (NO_TRACE_LOG)
     add_definitions(-DAE_NO_TRACE_LOG)
 endif()
 set(BOT_SOURCES src/main.cpp src/logging.cpp src/base64.cpp)
-set(BOT_COMMANDS src/commands/start.cpp src/commands/base64.cpp)
+set(BOT_COMMANDS src/commands/start.cpp src/commands/base64.cpp src/commands/convert.cpp)
 add_executable(aelliptic-bot ${BOT_SOURCES} ${BOT_COMMANDS})
 target_include_directories(aelliptic-bot PRIVATE 
                            tgbot-cpp/include
