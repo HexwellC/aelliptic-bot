@@ -17,6 +17,7 @@
 #include "./base64.hpp"
 #include "../base64.hpp"
 #include <vector>
+#include <sstream>
 #include <boost/algorithm/string.hpp>
 
 namespace aelliptic { namespace commands {
@@ -39,9 +40,10 @@ namespace aelliptic { namespace commands {
         if(tokens[1] == "decode") {
             response = base64_decode(tokens[2]);
         } else if (tokens[1] == "encode") {
+            response = message->text.substr(15);
             response = base64_encode(reinterpret_cast
-                                    <const unsigned char*>(tokens[2].c_str()), 
-                                     tokens[2].length());
+                                    <const unsigned char*>(response.c_str()), 
+                                     response.length());
         } else {
             usage(message->chat->id);
             return;
