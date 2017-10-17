@@ -31,7 +31,7 @@ namespace aelliptic { namespace commands {
     }
     
     void base64(const TgBot::Message::Ptr& message) {
-        std::vector<std::string> tokens = tokenize(message);
+        std::vector<std::string> tokens = tokenize(message->text);
         if(tokens.size() < 3) {
             usage(message->chat->id);
             return;

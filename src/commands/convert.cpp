@@ -49,7 +49,7 @@ namespace aelliptic { namespace commands {
 
     
     void convert(const TgBot::Message::Ptr& message) {
-        std::vector<std::string> tokens = tokenize(message);
+        std::vector<std::string> tokens = tokenize(message->text);
         if(tokens.size() < 4) { 
             convert_usage(message->chat->id);
             return;
