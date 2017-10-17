@@ -24,3 +24,18 @@ target_include_directories(aelliptic-bot SYSTEM PRIVATE
                            ${SQLITE3_INCLUDE_DIRS})
 target_link_libraries(aelliptic-bot ${CMAKE_THREAD_LIBS_INIT}
         ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} TgBot ${SQLITE3_LIBRARIES})
+option(ENABLE_TESTS "Enable make test target." ON)
+if (ENABLE_TESTS)
+    set(BUILD_GTEST ON)
+    set(BUILD_GMOCK OFF)
+    set(INSTALL_GTEST OFF)
+    set(INSTALL_GMOCK OFF)
+    add_subdirectory(gtest)
+    enable_testing()
+
+    set(TEST_SOURCES src/logging.cpp src/base64.cpp tests/main.cpp)
+    add_executable(aelliptic-bot-tests ${TEST_SOURCES})
+    target_link_libraries(aelliptic-bot-tests tgbot ${CMAKE_THREAD_LIBS_INIT} ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${SQLITE3_LIBRARIES} gtest)
+    target_include_directories(aelliptic-bot-tests PRIVATE ${PROJECT_SOURCE_DIR}/src)
+    add_test(aelliptic-bot-tests aelliptic-bot-tests)
+endif ()
