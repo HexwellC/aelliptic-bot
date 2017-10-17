@@ -20,6 +20,7 @@
 #include <sstream>
 #include "base64.hpp"
 #include <csignal>
+#include <fstream>
 
 namespace aelliptic {
     TgBot::Bot* bot;
@@ -32,27 +33,79 @@ void sigint(int) {
     if (stop) {
         log::error("SIGINT caught, forcing exit with error");
         log::close();
+        std::remove("SHUTDOWN_KEY");
         std::exit(1);
     }
     log::warn("SIGINT caught, bot will exit after any network event");
     stop = true;
 }
 
-int main(int argc, char** argv) {
+int main() {
     std::cout << "AElliptic Bot  Copyright (C) 2017  HexwellC\nThis program "
             "comes with ABSOLUTELY NO WARRANTY;\nThis is free software, and "
             "you are welcome to redistribute it\nunder certain conditions;"
               << std::endl;
     std::cout << "See LICENSE file for more details." << std::endl;
-    if (argc < 2) {
-        std::cerr << "No token supplied!" << std::endl;
+
+    std::string token;
+    bool show_shutdown_token = false;
+
+    {
+        std::ifstream conf_stream("bot.conf");
+        
+        if (!conf_stream.good()) {
+            conf_stream.close();
+            std::ofstream new_conf("bot.conf");
+            new_conf << "token=INSERT_TOKEN\n";
+            new_conf << "show-shutdown-key=true";
+            new_conf << std::endl;
+            std::cout << "Created new config, please change token "
+                      << "and restart application!" << std::endl;
+            return 0;
+        }
+        
+        std::string line;
+        std::vector<std::string> pairs;
+        int n_line = 0;
+        while (std::getline(conf_stream, line)) {
+            n_line++;
+            if (line[0] == '#') continue;
+            boost::split(pairs, line, boost::is_any_of("="));
+        
+            if (pairs[0] == "token") {
+                token = pairs[1];
+            } else if (pairs[0] == "show-shutdown-key") {
+                if (pairs[1] == "true" || pairs[1] == "1") {
+                    show_shutdown_token = true;
+                } else if (pairs[1] == "false" || pairs[1] == "0") {
+                    // Do nothing
+                } else {
+                    std::cerr << "\nInvalid config value, line: " << n_line
+                              << ": " << line << std::endl;
+                }
+            } else {
+                std::cerr << "Unknown option, line: " << n_line << ": "
+                         << line << std::endl;
+            }
+        }
+
+        if (n_line < 1) {
+            std::cerr << "\nBot config is empty!" << std::endl;
+        }
+    }
+
+    if (token.empty() || token == "INSERT_TOKEN") {
+        std::cerr << "\nNo token supplied!" << std::endl;
         return 1;
     }
+
     log::init("bot.log");
     log::info("Initializing bot and registering commands");
-    TgBot::Bot _bot(argv[1]);
+    TgBot::Bot _bot(token);
     bot = &_bot;
+
     std::string shutdown_token;
+
     { // Creating shutdown token
         std::random_device device;
         unsigned x = 0;
@@ -65,20 +118,27 @@ int main(int argc, char** argv) {
         shutdown_token = base64_encode(reinterpret_cast<const unsigned char*> 
                                        (shutdown_token.c_str()), 
                                        shutdown_token.length());
-        std::cout << "Generated shutdown token: " 
-                  << shutdown_token << std::endl;
+        {
+            if (show_shutdown_token) std::cout << "Generated shutdown token: "
+                                               << shutdown_token << std::endl;
+            std::ofstream("SHUTDOWN_KEY") << shutdown_token << std::endl;
+        }
     }
+
     _bot.getEvents().onCommand("shutdown", 
     [&shutdown_token](TgBot::Message::Ptr message) {
         if (message->text.substr(10) == shutdown_token) {
             aelliptic::stop = true;
         }
     });
+
     commands::register_commands();
+
     try {
         TgBot::TgLongPoll longPoll(_bot);
         std::signal(SIGINT, sigint);
         aelliptic::stop = false;
+
         log::info("Started, listening for updates");
         while (true) {
             longPoll.start();
@@ -88,6 +148,8 @@ int main(int argc, char** argv) {
         log::error("Exception occurred in bot poll loop!");
         log::error(e.what());
     }
+
     log::close();
+    std::remove("SHUTDOWN_KEY");
     return 0;
 }
