@@ -13,10 +13,12 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef AELLIPTIC_BOT_START_HPP
-#define AELLIPTIC_BOT_START_HPP
-#include "bot.hpp"
-namespace aelliptic { namespace commands {
-    void start(TgBot::Message::Ptr message);
-}}
-#endif //AELLIPTIC_BOT_START_HPP
+#pragma once
+
+#include "string"
+
+namespace aelliptic {
+    std::string base64_decode(std::string const& encoded_string);
+    std::string base64_encode(unsigned char const* bytes_to_encode, 
+                              unsigned int in_len);
+}

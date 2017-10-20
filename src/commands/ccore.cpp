@@ -13,10 +13,16 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef AELLIPTIC_BOT_BOT_HPP
-#define AELLIPTIC_BOT_BOT_HPP
-#include <tgbot/tgbot.h>
+
+#include "ccore.hpp"
+#include <boost/algorithm/string.hpp>
+
 namespace aelliptic {
-    extern TgBot::Bot* bot;
+    std::vector<std::string> tokenize(std::string message) {
+        std::vector<std::string> tokens;
+        boost::trim(message);
+        boost::split(tokens, message, boost::is_any_of("\t "),
+                     boost::token_compress_on);
+        return tokens;
+    }
 }
-#endif //AELLIPTIC_BOT_BOT_HPP

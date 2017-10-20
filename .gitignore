@@ -46,3 +46,6 @@ install_manifest.txt
 compile_commands.json
 /*build*
 *.kdev4
+.trash/
+*.conf
+aelliptic-bot

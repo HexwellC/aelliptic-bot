@@ -55,4 +55,4 @@ namespace aelliptic {
             _log_mutex.unlock();
         }
     }
-};
+}

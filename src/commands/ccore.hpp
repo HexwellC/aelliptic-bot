@@ -13,14 +13,17 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#include "start.hpp"
-namespace aelliptic { namespace commands {
-    void start(TgBot::Message::Ptr message) {
-        std::string msg = "AElliptic Bot v1.0\n"
-                    "Copyright (C) HexwellC 2017, GNU GPLv3, Source code:\n"
-                    "https://github.com/HexwellC/aelliptic-bot/\n"
-                    "\n"
-                    "Currently I can do almost nothing.";
-        bot->getApi().sendMessage(message->chat->id, msg);
-    }
-}}
+#pragma once
+
+#include <tgbot/tgbot.h>
+#include <vector>
+
+namespace aelliptic {
+    extern TgBot::Bot* bot;
+    
+    /**
+     * \brief Divides string into words removing `\t` and ` ` symbols.
+     */
+    std::vector<std::string> tokenize(std::string message);
+}
+
