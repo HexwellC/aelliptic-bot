@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "base64_test.hpp"
-#include "bot_test.hpp"
+#include "tokenizer_test.hpp"
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);

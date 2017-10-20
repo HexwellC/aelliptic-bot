@@ -13,11 +13,16 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#pragma once
 
-#include "bot.hpp"
+#include "ccore.hpp"
+#include <boost/algorithm/string.hpp>
 
-namespace aelliptic { namespace commands {
-    void base64(const TgBot::Message::Ptr& message);
-}}
-
+namespace aelliptic {
+    std::vector<std::string> tokenize(std::string message) {
+        std::vector<std::string> tokens;
+        boost::trim(message);
+        boost::split(tokens, message, boost::is_any_of("\t "),
+                     boost::token_compress_on);
+        return tokens;
+    }
+}

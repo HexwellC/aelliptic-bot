@@ -1,5 +1,5 @@
 // AElliptic Bot - bot for Autistic Epilepsy Foundation chat in Telegram
-// Copyright (C) 2017  inagen
+// Copyright (C) 2017  HexwellC
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -12,11 +12,18 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
-#pragma once 
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#pragma once
 
-#include "bot.hpp"
+#include <tgbot/tgbot.h>
+#include <vector>
 
-namespace aelliptic { namespace commands {
-    void convert(const TgBot::Message::Ptr& message);
-}}
+namespace aelliptic {
+    extern TgBot::Bot* bot;
+    
+    /**
+     * \brief Divides string into words removing `\t` and ` ` symbols.
+     */
+    std::vector<std::string> tokenize(std::string message);
+}
+

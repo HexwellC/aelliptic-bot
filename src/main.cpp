@@ -21,6 +21,7 @@
 #include "base64.hpp"
 #include <csignal>
 #include <fstream>
+#include <boost/algorithm/string.hpp>
 
 namespace aelliptic {
     TgBot::Bot* bot;
@@ -118,11 +119,9 @@ int main() {
         shutdown_token = base64_encode(reinterpret_cast<const unsigned char*> 
                                        (shutdown_token.c_str()), 
                                        shutdown_token.length());
-        {
-            if (show_shutdown_token) std::cout << "Generated shutdown token: "
-                                               << shutdown_token << std::endl;
-            std::ofstream("SHUTDOWN_KEY") << shutdown_token << std::endl;
-        }
+        if (show_shutdown_token) std::cout << "Generated shutdown token: "
+                                           << shutdown_token << std::endl;
+        std::ofstream("SHUTDOWN_KEY") << shutdown_token << std::endl;
     }
 
     _bot.getEvents().onCommand("shutdown", 

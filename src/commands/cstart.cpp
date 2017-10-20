@@ -13,17 +13,16 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#pragma once
 
-#include "commands/cstart.hpp"
-#include "commands/cbase64.hpp"
-#include "commands/cconvert.hpp"
+#include "cstart.hpp"
 
 namespace aelliptic { namespace commands {
-    inline void register_commands() {
-        bot->getEvents().onCommand("start", start);
-        bot->getEvents().onCommand("base64", base64);
-        bot->getEvents().onCommand("convert", convert);
+    void start(const TgBot::Message::Ptr& message) {
+        std::string msg = "AElliptic Bot v1.0\n"
+                    "Copyright (C) HexwellC 2017, GNU GPLv3, Source code:\n"
+                    "https://github.com/HexwellC/aelliptic-bot/\n"
+                    "\n"
+                    "Currently I can do almost nothing.";
+        bot->getApi().sendMessage(message->chat->id, msg);
     }
 }}
-

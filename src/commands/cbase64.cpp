@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "./base64.hpp"
+#include "cbase64.hpp"
 #include "../base64.hpp"
 #include <vector>
 #include <sstream>

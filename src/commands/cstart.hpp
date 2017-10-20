@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
-#include "bot.hpp"
+#include "ccore.hpp"
 
 namespace aelliptic { namespace commands {
     void start(const TgBot::Message::Ptr& message);

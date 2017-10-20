@@ -17,7 +17,7 @@ if (NO_TRACE_LOG)
     add_definitions(-DAE_NO_TRACE_LOG)
 endif()
 set(BOT_SOURCES src/main.cpp src/logging.cpp src/base64.cpp)
-set(BOT_COMMANDS src/commands/start.cpp src/commands/base64.cpp src/commands/convert.cpp)
+file(GLOB_RECURSE BOT_COMMANDS ${PROJECT_SOURCE_DIR}/src/commands/*.cpp)
 add_executable(aelliptic-bot ${BOT_SOURCES} ${BOT_COMMANDS})
 target_include_directories(aelliptic-bot SYSTEM PRIVATE 
                            tgbot-cpp/include
@@ -32,7 +32,6 @@ if (ENABLE_TESTS)
     set(INSTALL_GMOCK OFF)
     add_subdirectory(gtest)
     enable_testing()
-
     set(TEST_SOURCES src/logging.cpp src/base64.cpp tests/main.cpp)
     add_executable(aelliptic-bot-tests ${TEST_SOURCES})
     target_link_libraries(aelliptic-bot-tests tgbot ${CMAKE_THREAD_LIBS_INIT} ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${SQLITE3_LIBRARIES} gtest)
