@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
-#include "convert.hpp"
+#include "cconvert.hpp"
 #include <boost/algorithm/string.hpp>
 #include <string>
 
@@ -65,7 +65,7 @@ namespace aelliptic { namespace commands {
 
     
     void convert(const TgBot::Message::Ptr& message) {
-        std::vector<std::string> tokens = tokenize(message);
+        std::vector<std::string> tokens = tokenize(message->text);
         if(tokens.size() < 4) { 
             convert_usage(message->chat->id);
             return;
