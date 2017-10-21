@@ -17,6 +17,6 @@
 
 #include "ccore.hpp"
 
-namespace aelliptic { namespace commands {
+namespace aelliptic::commands {
     void start(const TgBot::Message::Ptr& message);
-}}
+}

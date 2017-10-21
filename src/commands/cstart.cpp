@@ -16,7 +16,7 @@
 
 #include "cstart.hpp"
 
-namespace aelliptic { namespace commands {
+namespace aelliptic::commands {
     void start(const TgBot::Message::Ptr& message) {
         std::string msg = "AElliptic Bot v1.0\n"
                     "Copyright (C) HexwellC 2017, GNU GPLv3, Source code:\n"
@@ -25,4 +25,4 @@ namespace aelliptic { namespace commands {
                     "Currently I can do almost nothing.";
         bot->getApi().sendMessage(message->chat->id, msg);
     }
-}}
+}

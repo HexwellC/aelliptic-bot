@@ -20,7 +20,7 @@
 #include <sstream>
 #include <boost/algorithm/string.hpp>
 
-namespace aelliptic { namespace commands {
+namespace aelliptic::commands {
    
     static inline void usage(uint64_t id) {
         bot->getApi().sendMessage(id, 
@@ -55,4 +55,4 @@ namespace aelliptic { namespace commands {
                                       "ERROR: Invalid input");
         }
     }
-}}
+}

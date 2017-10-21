@@ -15,11 +15,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 #include "cconvert.hpp"
-#include <boost/algorithm/string.hpp>
 #include <string>
 
-double convert_temp(std::string in_what, std::string data){
-
+double convert_temp(std::string in_what, std::string data) {
     if(in_what == "C/F")
         return atof(data.c_str()) * 1.8 + 32;
     else if(in_what == "F/C")
@@ -36,7 +34,7 @@ double convert_temp(std::string in_what, std::string data){
     throw std::exception();
 }
 
-double convert_angle(std::string in_what, std::string data){
+double convert_angle(std::string in_what, std::string data) {
     if(in_what == "D/R")
         return atof(data.c_str()) * 0.0175;
     else if(in_what == "R/D")
@@ -53,7 +51,7 @@ double convert_angle(std::string in_what, std::string data){
     throw std::exception();
 }
 
-namespace aelliptic { namespace commands {
+namespace aelliptic::commands {
 
     static inline void convert_usage(uint64_t id) {
         bot->getApi().sendMessage(id, 
@@ -71,7 +69,7 @@ namespace aelliptic { namespace commands {
             return;
         }
         std::string response;
-        if(tokens[1] == "temperature"){
+        if(tokens[1] == "temperature") {
 
             try {
                 std::stringstream ss;
@@ -110,4 +108,4 @@ namespace aelliptic { namespace commands {
 
         bot->getApi().sendMessage(message->chat->id, response);
     }
-}}
+}
