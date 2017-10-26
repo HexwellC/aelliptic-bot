@@ -1,5 +1,5 @@
 // AElliptic Bot - bot for Autistic Epilepsy Foundation chat in Telegram
-// Copyright (C) 2017  inagen
+// Copyright (C) 2017  HexwellC
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
