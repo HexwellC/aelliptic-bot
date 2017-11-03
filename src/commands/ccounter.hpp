@@ -12,23 +12,14 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 #pragma once
 
-#include "commands/cstart.hpp"
-#include "commands/cbase64.hpp"
-#include "commands/cconvert.hpp"
-#include "commands/creverse.hpp"
-#include "commands/ccounter.hpp"
+#include "ccore.hpp"
 
-namespace aelliptic { namespace commands {
-    inline void register_commands() {
-        bot->getEvents().onCommand("start", start);
-        bot->getEvents().onCommand("base64", base64);
-        bot->getEvents().onCommand("convert", convert);
-        bot->getEvents().onCommand("reverse", reverse);
-        bot->getEvents().onCommand("counter", counter_command);
-        bot->getEvents().onNonCommandMessage(counter_message);
-    }
-}}
+namespace aelliptic::commands {
+    void counter_command(const TgBot::Message::Ptr& message);
+    void counter_message(const TgBot::Message::Ptr& message);
+}
 
+ 
