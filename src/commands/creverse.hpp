@@ -15,17 +15,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
-#include "commands/cstart.hpp"
-#include "commands/cbase64.hpp"
-#include "commands/cconvert.hpp"
-#include "commands/creverse.hpp"
+#include "ccore.hpp"
 
-namespace aelliptic { namespace commands {
-    inline void register_commands() {
-        bot->getEvents().onCommand("start", start);
-        bot->getEvents().onCommand("base64", base64);
-        bot->getEvents().onCommand("convert", convert);
-        bot->getEvents().onCommand("reverse", reverse);
-    }
-}}
-
+namespace aelliptic::commands {
+    void reverse(const TgBot::Message::Ptr& message);
+}
+ 
